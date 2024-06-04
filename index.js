@@ -12,7 +12,12 @@ const NotFoundPage = document.querySelector(".not-found");
 let oldTab = userTab;
 const API_key = "d1845658f92b31c64bd94f06f7188c9c";
 oldTab.classList.add("current-tab");
-getLocation();
+sessionStorage.clear();
+const localCoordinates = sessionStorage.getItem("user-coordinates");
+if(!localCoordinates){
+    grantAccessContainer.classList.add("active");
+    searchForm.classList.remove("active");
+}
 function switchTab(newTab){
     if(newTab!=oldTab){
         oldTab.classList.remove("current-tab");
@@ -20,15 +25,22 @@ function switchTab(newTab){
         oldTab.classList.add("current-tab");
 
         if(!searchForm.classList.contains("active")){
-            userInfoContainer.classList.remove("active");
             grantAccessContainer.classList.remove("active");
+            userInfoContainer.classList.remove("active");
             NotFoundPage.classList.remove("active");
             searchForm.classList.add("active");
         }else{
-            searchForm.classList.remove("active");
-            userInfoContainer.classList.remove("active");
-            NotFoundPage.classList.remove("active");
-            getfromSessionStorage();
+            const localCoordinates = sessionStorage.getItem("user-coordinates");
+            if(!localCoordinates){
+                grantAccessContainer.classList.add("active");
+                searchForm.classList.remove("active");
+            }else{
+                grantAccessContainer.classList.remove("active");
+                searchForm.classList.remove("active");
+                // userInfoContainer.classList.remove("active");
+                NotFoundPage.classList.remove("active");
+                getfromSessionStorage();
+            }
         }
     }
 }
